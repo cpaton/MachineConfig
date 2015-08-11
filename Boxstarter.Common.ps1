@@ -5,3 +5,5 @@ Move-LibraryDirectory "Downloads" "C:\_cp\Downloads"
 
 Set-WindowsExplorerOptions -EnableShowHiddenFilesFoldersDrives -EnableShowFileExtensions -EnableShowFullPathInTitleBar
 
+Update-Help -UICulture "en-us"
+
