@@ -17,6 +17,11 @@ if ( -not ( Test-Path C:\_cp ) ) {
     New-Item -Path C:\_cp -ItemType Directory | Out-Null
 }
 
+Get-PackageProvider -Name chocolatey
+
+Install-Package boxstarter
+
+<#
 # Install Chocolately
 if ( -not ( Test-Path Env:\ChocolateyInstall ) ) {
     Write-Host "Installing Chocolately"
@@ -24,11 +29,33 @@ if ( -not ( Test-Path Env:\ChocolateyInstall ) ) {
 }
 
 choco install boxstarter -y
+#>
 
 # Add the boxstarter modules to the current shell
 $boxStarterShell = Join-Path $env:APPDATA "BoxStarter\BoxStarterShell.ps1"
 Invoke-Expression ( "& '{0}'" -f $boxStarterShell )
 
+Enable-RemoteDesktop
+Move-LibraryDirectory "Downloads" "C:\_cp\Downloads"
+Enable-MicrosoftUpdate
+Set-WindowsExplorerOptions -EnableShowHiddenFilesFoldersDrives -EnableShowFileExtensions -EnableShowFullPathInTitleBar
+Update-Help -UICulture "en-us"
+
+$packagesCore = Join-Path $scriptDirectory "Packages.Core.config"
+#$packagesCore = "C:\_cp\Git\MachineConfig\Packages.Core.config"
+$packagesXml = [xml](Get-Content $packagesCore)
+
+#$packages = [string[]]$packagesXml.Packages.package.id
+#Install-Package -Name $packages -Force -Verbose
+
+
+foreach ( $package in $packagesXml.Packages.package.id ) {
+    Install-Package $package -Force -Verbose
+}
+
+
+
+<#
 # Take the box starter template script BoxStarter.Common and create a specific one with the package configs to run
 $boxStarterCommon = Join-Path $scriptDirectory "Boxstarter.Common.ps1"
 $boxStarterScript = Join-Path $scriptDirectory "Boxstarter.ps1"
@@ -44,3 +71,4 @@ Add-Content -Path $boxStarterScript ( "`nchoco install '{0}' -y" -f $packagesCor
 # Run boxstarter
 $Boxstarter.RebootOk = $true
 Install-BoxstarterPackage $boxStarterScript
+#>
