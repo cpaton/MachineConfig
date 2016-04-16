@@ -17,9 +17,9 @@ if ( -not ( Test-Path C:\_cp ) ) {
     New-Item -Path C:\_cp -ItemType Directory | Out-Null
 }
 
-Get-PackageProvider -Name chocolatey
+Get-PackageProvider -Name chocolatey -Force
 
-Install-Package boxstarter
+Install-Package boxstarter -Force
 
 <#
 # Install Chocolately
