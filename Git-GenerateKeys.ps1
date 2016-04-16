@@ -18,7 +18,7 @@
     }
     $sshKeys["Public"] = $sshKeys["Private"] + ".pub"
     
-    $generateCommand = '& ''C:\Program Files (x86)\Git\bin\sh.exe'' --login -i -c ''ssh-keygen -t rsa -b 4096 -C ""{0}"" -f {1} -N """"''' -f $Comment, $sshKeys["Private"]
+    $generateCommand = '& ''C:\Program Files\Git\bin\sh.exe'' --login -i -c ''ssh-keygen -t rsa -b 4096 -C ""{0}"" -f {1} -N """"''' -f $Comment, $sshKeys["Private"]
     Write-Verbose $generateCommand
     Invoke-Expression $generateCommand
 
@@ -120,7 +120,7 @@ Add-SshConfig -SshHost bitbucket.org -PrivateKeyPath $bitbucketKeys.Private
 $storageKeys = GenerateSshKey synology "craig" -Verbose
 Add-SshConfig -SshHost storage -PrivateKeyPath $storageKeys.Private
 
-Get-Content ( Join-Path $env:USERPROFILE ".ssh\sshconfig" )
+Get-Content ( Join-Path $env:USERPROFILE ".ssh\config" )
 
 
 <#
